@@ -7,6 +7,7 @@
 * pip install flask
 * pip install flask_migrate
 * python app.py
+* deactivate (Pour sortir de venv)
 
 Documentation : 
     https://medium.com/@arslanaut/minimal-flask-application-using-mvc-design-pattern-842845cef703
