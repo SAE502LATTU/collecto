@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Processus Actifs</h2>
+
+<!-- Tableau pour afficher les processus actifs -->
+<table id="processTable" class="display">
+    <thead>
+        <tr>
+            <th>PDID du Processus</th>
+            <th>Nom</th>
+            <th>Utilisateur</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Les données seront ajoutées ici dynamiquement avec JavaScript -->
+    </tbody>
+</table>
+
+<script>
+    // Exemple de données de processus (remplacez cela par vos données réelles)
+    var processData = [
+        { name: 'Processus1', id: 123, user: 'Utilisateur1', memory: '512 MB' },
+        { name: 'Processus2', id: 456, user: 'Utilisateur2', memory: '256 MB' },
+        // Ajoutez d'autres données au besoin
+    ];
+
+    // Fonction pour initialiser DataTable avec les données
+    function initializeDataTable(data) {
+        $('#processTable').DataTable({
+            data: data,
+            columns: [
+                { data: 'pdid' },
+                { data: 'name' },
+                { data: 'username' },
+                // Ajoutez d'autres colonnes au besoin
+            ]
+        });
+    }
+
+    // Appel de la fonction avec les données de processus
+    initializeDataTable(processData);
+</script>
+
+{% endblock %}
