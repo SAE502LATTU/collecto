@@ -16,14 +16,14 @@ def get_server_stats():
         memory_usage_command = 'free -m'
 
         stdin, stdout, stderr = ssh_client.exec_command(cpu_usage_command)
-        cpu_result = stdout.read().decode().strip()
-
+        cpu_result = stdout.read().decode().strip() 
+        
         stdin, stdout, stderr = ssh_client.exec_command(disk_usage_command)
         disk_result = stdout.read().decode().strip()
-
+        
         stdin, stdout, stderr = ssh_client.exec_command(memory_usage_command)
         memory_result = stdout.read().decode().strip()
-
+        
     except Exception as e:
         print(f"Erreur lors de la connexion ou de l'exécution des commandes : {e}")
         return None
