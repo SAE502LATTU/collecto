@@ -1,4 +1,6 @@
 from flask import render_template
-from views import *
+from .server_stats import get_server_stats
+
 def index():
-    return render_template('index.html')
+    server_stats = get_server_stats()
+    return render_template('index.html', server_stats=server_stats)
