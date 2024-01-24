@@ -6,7 +6,9 @@
 * source venv/bin/activate
 * pip install flask
 * pip install flask_migrate
-* python app.py
+* pip install views
+* pip install paramiko
+* flask --app __init__.py run
 * deactivate (Pour sortir de venv)
 
 Documentation : 
