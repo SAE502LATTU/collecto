@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block content %}
+
+<<<<<<< HEAD
+<h1 class="mb-4">Informations de Surveillance du Serveur</h1>
+
+{% if server_stats.error %}
+    <div class="alert alert-danger">
+        {{ server_stats.error }}
+    </div>
+{% else %}
+    <div class="mb-4">
+        <h2>Utilisation Détail du CPU</h2>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Usage CPU (%)</th>
+            </tr>
+            <tr>
+                {% set cpu_values = server_stats.cpu_usage.split(",") %}
+                <td>{{cpu_values[0][9:]}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="mb-4">
+        <h2>Utilisation du Disque Dur</h2>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Système de fichiers</th>
+                <th>Taille</th>
+                <th>Utilisé</th>
+                <th>Disponible</th>
+                <th>Utilisation</th>
+                <th>Monté sur</th>
+            </tr>
+            {% for line in server_stats.disk_usage.split('\n') %}
+            {% if loop.index > 1 %}
+                <tr>
+                    {% for item in line.split() %}
+                        <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="mb-4">
+        <h2>Utilisation de la Mémoire Vive</h2>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Type</th>
+                <th>Total</th>
+                <th>Utilisé</th>
+                <th>Libre</th>
+                <th>Partagé</th>
+                <th>Tampon/Cache</th>
+                <th>Disponible</th>
+            </tr>
+            {% for line in server_stats.memory_usage.split('\n') %}
+            {% if line.startswith('Mem:') %}
+                <tr>
+                    {% set items = line.split() %}
+                    <td>{{ items[0] }}</td>
+                    <td>{{ items[1] }} MB</td>
+                    <td>{{ items[2] }} MB</td>
+                    <td>{{ items[3] }} MB</td>
+                    <td>{{ items[4] }} MB</td>
+                    <td>{{ items[5] }} MB</td>
+                    <td>{{ items[6] }} MB</td>
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+
+    <div>
+        <h2>Uptime du serveur</h2>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Uptime</th>
+            </tr>
+            <tr>
+                <td>{{ server_stats.uptime }}</td>
+            </tr>
+        
+        </table>
+    </div>
+
+{% endif %}
+
+=======
+{% if server_stats != None %}
+<h1>Informations de Surveillance du Serveur</h1>
+
+<h2>Utilisation Détail du CPU</h2>
+<table>
+    <tr>
+        <th>Utilisateur (%)</th>
+        <th>Système (%)</th>
+        <th>Nice (%)</th>
+        <th>Inactif (%)</th>
+        <th>Attente I/O (%)</th>
+        <th>Interruptions Matérielles (%)</th>
+        <th>Interruptions Logicielles (%)</th>
+        <th>Temps Volé (%)</th>
+    </tr>
+    <tr>
+        {% set cpu_values = server_stats.cpu_usage.split(",") %}
+        <td>{{ cpu_values[0].split(':')[1].strip() }}</td>
+        <td>{{ cpu_values[1].strip() }}</td>
+        <td>{{ cpu_values[2].strip() }}</td>
+        <td>{{ cpu_values[3].strip() }}</td>
+        <td>{{ cpu_values[4].strip() }}</td>
+        <td>{{ cpu_values[5].strip() }}</td>
+        <td>{{ cpu_values[6].strip() }}</td>
+        <td>{{ cpu_values[7].strip() }}</td>
+    </tr>
+</table>
+
+
+
+<h2>Utilisation du Disque Dur</h2>
+<table id=”data-table” class=”display”>
+    <tr>
+        <th>Système de fichiers</th>
+        <th>Taille</th>
+        <th>Utilisé</th>
+        <th>Disponible</th>
+        <th>Utilisation</th>
+        <th>Monté sur</th>
+    </tr>
+    {% for line in server_stats.disk_usage.split('\n') %}
+    {% if loop.index > 1 %}
+    <tr>
+        {% for item in line.split() %}
+        <td>{{ item }}</td>
+        {% endfor %}
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+
+<h2>Utilisation de la Mémoire Vive</h2>
+<table>
+    <tr>
+        <th>Type</th>
+        <th>Total</th>
+        <th>Utilisé</th>
+        <th>Libre</th>
+        <th>Partagé</th>
+        <th>Tampon/Cache</th>
+        <th>Disponible</th>
+    </tr>
+    {% for line in server_stats.memory_usage.split('\n') %}
+    {% if loop.index > 1 %}
+    <tr>
+        {% set items = line.split() %}
+        <td>{{ items[0] }}</td>
+        <td>{{ items[1] }} MB</td>
+        <td>{{ items[2] }} MB</td>
+        <td>{{ items[3] }} MB</td>
+        <td>{{ items[4] }} MB</td>
+        <td>{{ items[5] }} MB</td>
+        <td>{{ items[6] }} MB</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+{% endif %}
+>>>>>>> main
+{% endblock %}
