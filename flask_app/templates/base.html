@@ -21,7 +21,7 @@
                         {% if current_user.is_authenticated %}
                         <a class="nav-link active" href="{{ url_for('main.index') }}">Accueil</a>
                         <a class="nav-link" href="#">Audit de sécurité</a>
-                        <a class="nav-link" href="#">Détection d'anomalies</a>
+                        <a class="nav-link" href="{{ url_for('detection_anomalies.html') }}">Détection d'anomalies</a>
                         <a class="nav-link" href="#">Analyse de vulnerabilité</a>
                         <a class="nav-link" href="#">Politique de sécurité</a>
                         <a class="nav-link" href="#">Journal d'audit</a>
