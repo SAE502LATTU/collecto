@@ -4,8 +4,8 @@ def get_server_stats():
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    server_ip = '192.168.56.101'
-    username = 'theodcnccao'
+    server_ip = '192.168.253.135'
+    username = 'user'
     password = 'bonjour'
 
     try:

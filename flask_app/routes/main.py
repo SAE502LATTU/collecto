@@ -2,6 +2,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required
 from flask_app import db
 from flask_app.src.scripts.server_stats import get_server_stats
+from flask_app.src.scripts.server_info import get_port, afficher_processus_ssh, afficher_logs_services
 
 main = Blueprint('main', __name__)
 
@@ -10,6 +11,14 @@ main = Blueprint('main', __name__)
 def index():
     server_stats = get_server_stats()
     return render_template('index.html', server_stats=server_stats)
+
+@main.route('/info_secu')
+def info_secu():
+    ports_info = get_port()
+    process_info = afficher_processus_ssh()
+    logs_info = afficher_logs_services()  # Récupérer les logs
+
+    return render_template('info_secu.html', ports_info=ports_info, process_info=process_info, logs_data=logs_info)  # Correction du nom de variable
 
 # [EXEMPLE DE ROUTE]
 #@main.route('/exemple', methods=['GET']) => Chemin de la route avec la méthode GET

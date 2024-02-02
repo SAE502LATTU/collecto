@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <title>État des ports</title>
+    <h1>État des ports</h1>
+    <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css"/>
+
+    <table id="portTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Numéro de port</th>
+                <th>Nom du port ouvert</th>
+                <th>État</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for port_info in ports_info %}
+                <tr>
+                    <td>{{ port_info['port_number'] }}</td>
+                    <td>{{ port_info['port_name'] }}</td>
+                    <td>{{ port_info['status'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>    
+
+    <hr> 
+
+    <h2>Processus SSH</h2>
+    <table id="processusTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Utilisateur</th>
+                <th>Nom du processus</th>
+                <th>PID</th>
+                <th>CPU %</th>
+            
+            </tr>
+        </thead>
+       
+        <tbody>
+            {% for proc_info in process_info %}
+                <tr>
+                    <td>{{ proc_info['user'] }}</td>
+                    <td>{{ proc_info['process_name'] }}</td>
+                    <td>{{ proc_info['pid'] }}</td>
+                    <td></td>
+                   
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+    <h2>Journaux des services</h2>
+    {% for log_data in logs_data %}
+        <h3>Journaux {{ log_data['service'] }}</h3>
+        <div class="terminal">
+            <pre>{{ log_data['logs'] }}</pre>
+        </div>
+    {% endfor %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
+    
+    <script> //DataTables (adaptées à chaque fonction, pr chaque tableau)
+        $('#portTable').DataTable({
+            paging: true,
+            dom: 'Bfrtip',
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+            className: 'table table-striped table-bordered'
+        });
+
+        $('#processusTable').DataTable({
+            paging: true,
+            pageLength: 20,
+            dom: 'Bfrtip',
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+            style: 'table table-striped table-bordered',
+         
+        });
+    </script>
+
+    <style>
+        .terminal {
+            background-color: #000;
+            color: #fff;
+            padding: 10px;
+            overflow: auto;
+            max-height: 300px; 
+        }
+    
+        .terminal pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+    </style>
+{% endblock %}
