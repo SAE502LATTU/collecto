@@ -1,8 +1,6 @@
 from scapy.layers.inet import Ether
 from scapy.layers.l2 import ARP, srp
-# import argparse
 import socket
-import time
 import napalm
 import paramiko
 
@@ -37,12 +35,12 @@ def afficher_logs_services():
         ]
 
         
-        services = ["apache2", "ssh", "boot"] # var services correspondant aux commandes dans la liste commandes
+        services = ["apache2", "ssh", "boot"] # services associées
         for i, commande in enumerate(commandes):
-            _, sortie, _ = client_ssh.exec_command(commande) # stdin, stdout et stderr
-            logs_data = { ##
-                'service': services[i], # 
-                'logs': sortie.read().decode()
+            _, sortie, _ = client_ssh.exec_command(commande) # stdin, stdout et stderr (stdout utile dans notre cas, qui correspond aux lignes de logs)
+            logs_data = { 
+                'service': services[i], # Nom du service extrait
+                'logs': sortie.read().decode() # Lignes de logs
             }
             logs.append(logs_data)
 
@@ -65,7 +63,7 @@ def afficher_processus_ssh():
     process_info = []  # Liste qui stockera toutes les infos qui seront énumérées dans le tableau HTML
 
     try:
-        # Connexion au serveur SSH
+      
         client_ssh.connect(
             machine_info['ip'],
             username=machine_info['utilisateur'],
@@ -79,7 +77,7 @@ def afficher_processus_ssh():
         _, sortie, _ = client_ssh.exec_command(commande)
 
         # itère sur chaque paire (index, commande)
-        for ligne in sortie.read().decode().splitlines()[1:]:  # Ignorer la première ligne (entêtes de la commande)
+        for ligne in sortie.read().decode().splitlines()[1:]:  # ignore les détails inutiles
             # 
             colonnes = ligne.split()
             user = colonnes[0]
@@ -87,19 +85,17 @@ def afficher_processus_ssh():
             #cpu_percentage = colonnes[2] ?
             process_name = colonnes[10]  
 
-            # Ajouter les informations du processus à la liste
+
             process_info.append({
                 'user': user,
                 'pid': pid,
-                'process_name': process_name,  # Ajoutez la clé pour le nom du processus
-                # Ajoutez d'autres clés selon vos besoins
+                'process_name': process_name, 
             })
 
     except Exception as e:
         print(f"Erreur de connexion SSH : {e}")
 
     finally:
-        # Fermeture de la connexion SSH
         client_ssh.close()
 
     return process_info
@@ -118,12 +114,12 @@ def get_port():
     #startTime = time.time()
     ports_info = []  # Liste pour stocker les informations sur chaque port
 
-    for i in range(79, 82):  # Vérifier les ports de 1 à 1024
+    for i in range(79, 82): 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         conn = s.connect_ex((machine_info['ip'], i))
         port_status = "OPEN" if conn == 0 else "CLOSED"
         
-        # Nom associé au port (ajustez en fonction de vos besoins)
+        # Association au type de service (test de 3 ports)
         port_name = "HTTP" if i == 80 else "SSH" if i == 22 else "Autre"
 
         ports_info.append({
@@ -132,16 +128,20 @@ def get_port():
             'status': port_status
         })
 
-        if conn == 0:
-            # Vous pouvez appeler getInfo(ip, i) ici si nécessaire
+        if conn == 0: # Première version
+       
             print(f'Port {i} ({port_name}): {port_status}')
 
-        s.close()  # Fermer la connexion
+        s.close()  
 
     #print("Time taken:", time.time() - startTime)
     #print(ports_info)
     return ports_info
 
+
+#debugging ! 
+
 #port()
 #afficher_logs_services(info_connexion_kali)
 #afficher_processus_ssh(info_connexion_kali)
+ 
